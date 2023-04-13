@@ -796,7 +796,7 @@ hideInToc: true
 
 ---
 
-# Phân chia bằng LZ
+# Phân chia bằng LZW
 
 Hàm `lzw_split` có hai tham số đầu vào là chuỗi kí tự và kích thước cho mỗi bộ (ở đây mặc định 4 kí tự (128 bit))
 
@@ -808,19 +808,88 @@ Chuẩn bị: 1 mảng trống làm từ điển, 1 chuỗi rỗng a và 1 mản
   - Nếu chưa, ta thêm vào mảng trả về chuỗi a, thêm chuỗi vừa rồi vào từ điển nếu nó nhỏ hơn kích thước từ điển và gán kí tự đang xét vào chuỗi a
 - Bước 3: Thêm kí tự còn lại vào mảng encoded
 
-Do đặc trưng của LZ, nó sẽ tạo ra các chuỗi có độ dài tăng dần, có nhiều chuỗi là chuỗi con của 1 chuỗi khác trong dãy, vậy nên để tối ưu, chúng ta sẽ đệ quy để đảm bảo tỉ lệ 60% đầu ra đạt kích thước yêu cầu
-
 Kết quả thu được là một mảng chứa các bộ kí tự
 
 ---
 class: px-20
+
 ---
-# Kết quả khi chạy bằng thuật toán LZW
+# Code lzw_split
+
+```python {1-10|10-21|22-} {maxHeight:'400px'}
+def lzw_split(input_string, word_size = 4, dictionary = None, compress_rate = 0.6):
+    if len(input_string) == 0 or input_string is None:
+        return []
+    if word_size > len(input_string):
+        word_size = len(input_string)
+    if dictionary is None:
+        dictionary = []
+    current_string = []
+    encoded = []
+
+    for char in input_string:
+        current_string_plus_char = current_string + [char]
+        if current_string_plus_char in dictionary:
+            current_string = current_string_plus_char
+        else:
+            encoded.append(current_string) if len(current_string) != 0 else None
+            if len(current_string) < word_size:
+                dictionary += [current_string_plus_char]
+            current_string = [char]
+    if current_string:
+        encoded.append(current_string)
+    ratio=0
+    for i in encoded:
+        if len(i) == word_size:
+            ratio += 1
+    if ratio < len(encoded) // 10 * int(10*compress_rate):
+        print("Run another time!")
+        encoded = lzw_split(input_string, word_size, dictionary)
+    return encoded
+```
+
+---
+class: px-20
+---
+# Kết quả chạy LZW
+
+```python 
+data = 100 * """
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed erat vitae nunc mattis pretium eu ultricies turpis. Quisque a suscipit enim. Nullam tristique diam eu risus tincidunt ultrices. Quisque gravida nisi a porta euismod. Nam tincidunt pellentesque purus eu dapibus. Sed luctus ac dui eget cursus. Quisque quis velit vel neque mattis elementum.
+
+Integer et tortor a tortor rhoncus dignissim vitae ut nunc. Nulla in varius eros. Maecenas eget aliquam risus, sit amet vestibulum diam. Maecenas luctus arcu odio, eu maximus enim vehicula eu. Fusce et commodo ante. Proin consectetur elit vel quam faucibus gravida. Duis lorem arcu, dictum ut bibendum ut, fringilla ac tellus. Praesent posuere augue in suscipit varius. Vestibulum mi nibh, venenatis a felis in, sollicitudin viverra magna. Vivamus quis erat arcu. Pellentesque nec bibendum ex, vitae tempor mauris. Aliquam erat volutpat. Donec luctus non risus id suscipit. Maecenas efficitur sem porta est fermentum hendrerit.
+
+Praesent pulvinar mattis gravida. Nunc tincidunt a quam ut aliquet. Ut nec libero eget dolor ornare vestibulum. Vivamus at orci purus. Aenean eget enim dapibus, elementum velit eget, tempor purus. Cras efficitur dignissim ipsum eu lobortis. Nulla congue vestibulum pharetra. Praesent sit amet hendrerit tortor. Sed porttitor quam egestas quam fermentum, ut fringilla dui molestie. Nullam est leo, tincidunt eget consectetur ac, aliquam in massa.
+
+Praesent vel mauris neque. Quisque varius sed metus at gravida. Fusce condimentum purus ac sem lobortis venenatis. Ut interdum nisi nibh, sed malesuada justo pretium eu. Proin efficitur gravida aliquam. Praesent eu commodo velit, eu cursus diam. Donec et ante ut nibh laoreet congue sed in sapien. Vestibulum blandit semper sapien vel cursus. Mauris feugiat dolor nec imperdiet mollis. Cras vulputate vitae neque maximus sagittis. Duis ultricies lobortis gravida. Cras nec risus ac augue hendrerit blandit. Nam diam metus, dignissim id lacus eget, euismod dignissim massa. Nullam et mi vestibulum lacus consectetur convallis vitae et dolor.
+
+Maecenas sit amet facilisis nisi, vel porta risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque eu ante quis lectus sollicitudin posuere et in justo. Nam sapien eros, suscipit eget felis id, efficitur pulvinar felis. Suspendisse rhoncus, eros et placerat sagittis, diam ipsum sagittis justo, quis dictum libero sapien eu neque. Donec ultricies consectetur enim sodales maximus. Phasellus at rutrum arcu, a fermentum dolor. Nulla condimentum sem dui, non rutrum leo iaculis a. Maecenas id scelerisque lorem, ac tempus est. Etiam sit amet venenatis massa. Vestibulum tempor finibus ligula non efficitur. Fusce eu ligula ut metus bibendum tincidunt vitae in enim.
+"""
+```
+---
+class: px-20
+hideInToc: true
+
+---
+
+# Kết quả chạy LZW
+
 <img
-src="imgs/plot_lzw.png"
-alt="Optimized plot"
-style="width: 70%; height: 70%;"
+  class="mb-50 w-170 h-100"
+  src="imgs/plot_lzw.png"
 />
+---
+layout: two-cols
+class: px-20
+---
+## Ưu điểm:
+
+LZW là thuật toán nén dữ liệu có nhiều ưu điểm như không yêu cầu thông tin trước về chuỗi đầu vào, có thể nén chuỗi đầu vào trong một lần duyệt duy nhất, đơn giản, có tỷ lệ nén cao và tốc độ giải nén nhanh. Nó cũng được sử dụng rộng rãi trên nhiều ứng dụng phần mềm và hệ điều hành. 
+
+::right::
+## Nhược điểm:
+
+Tuy nhiên, LZW cũng có một số nhược điểm như vấn đề bằng sáng chế, yêu cầu bộ nhớ đáng kể, tốc độ nén chậm và áp dụng hạn chế đối với các loại dữ liệu khác nhau.
 
 ---
 class: px-20
