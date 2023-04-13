@@ -840,3 +840,15 @@ class: px-20
 layout: end
 ---
 # Cảm ơn các bạn đã theo dõi
+
+  <div style="position: absolute; top: 80%; right: 0; transform: translate(-50%, -50%);">
+   <p>Xem thêm tại:</p>
+<img src="https://chart.googleapis.com/chart?cht=qr&chl=https%3A%2F%2Fgithub.com%2Fkidclone3%2Fhuffman-code&chs=180x180&choe=UTF-8&chld=L|2" rel="nofollow" alt="qr code"><a href="www.qr-code-generator.com/" border="0" style="cursor:default" rel="nofollow"></a>
+</div>
+
+<div style="position: relative;">
+  <!-- Your container content here -->
+  <div style="position: absolute; bottom: 0; right: 0;">
+    <!-- Your element in the bottom right corner here -->
+  </div>
+</div>
