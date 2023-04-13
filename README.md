@@ -1,4 +1,6 @@
 # Welcome to [Slidev](https://github.com/slidevjs/slidev)!
+# A presentation slide of Huffman Coding
+## By: Delus
 
 To start the slide show:
 
