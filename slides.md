@@ -71,7 +71,7 @@ image: imgs/Huffman-Coding-Problem-01-Solution-Constructed-Huffman-Tree.png
 # Huffman là cái chi?
 
 
-<div class="bg-red-500 center p-10">
+<div class="bg-gray-700 center p-10">
 Mã hóa thông tin - nén dữ liệu dựa trên bảng tần suất xuất hiện của các ký tự trong dữ liệu đầu vào.
 </div>
 
@@ -742,6 +742,7 @@ Quan trọng nhất
 
 ---
 class: px-20
+hideInToc: true
 ---
 # Đánh giá thuật toán
 
@@ -778,7 +779,7 @@ layout: center
 
 # Cải tiến
 
-## LZW - Lempel-Ziv-Welch
+#  kết hợp với LZW - Lempel-Ziv-Welch
 
 ---
 layout: iframe
@@ -812,7 +813,7 @@ Kết quả thu được là một mảng chứa các bộ kí tự
 
 ---
 class: px-20
-
+hideInToc: true
 ---
 # Code lzw_split
 
@@ -850,6 +851,7 @@ def lzw_split(input_string, word_size = 4, dictionary = None, compress_rate = 0.
 
 ---
 class: px-20
+hideInToc: true
 ---
 # Kết quả chạy LZW
 
@@ -907,6 +909,7 @@ class: px-20
 
 ---
 layout: end
+hideInToc: true
 ---
 # Cảm ơn các bạn đã theo dõi
 
